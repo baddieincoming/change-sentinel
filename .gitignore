@@ -1,0 +1,15 @@
+.venv/
+data/
+output/*
+!output/nuh-subset/
+__pycache__/
+.pytest_cache/
+*.part*
+logs/
+submission/*.mp4
+submission/*.zip
+submission/deck/img/
+submission/deck/slides/
+submission/deck/deck.html
+submission/video/build/
+.DS_Store

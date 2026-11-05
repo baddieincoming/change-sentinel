@@ -1,0 +1,82 @@
+{
+  "pixels": 24.0,
+  "area_ha": 0.96,
+  "disturbed_before": 0.2500000024835269,
+  "disturbed_after": 0.9771505345900854,
+  "ndvi_p90_before": 0.311286062002182,
+  "ndvi_p90_after": 0.15055778995156288,
+  "bsi_before": 0.22047245502471924,
+  "bsi_after": 0.18503940105438232,
+  "n_clear_before": 28.0,
+  "n_clear_after": 31.041666666666668,
+  "cropland_frac": 0.20833333333333334,
+  "built_frac": 0.0,
+  "slope_mean": 2.4571348701914153,
+  "kind": "expansion",
+  "area_ha_low": 0.4458359213500126,
+  "area_ha_high": 1.4741640786499874,
+  "label": 3,
+  "period_before": "Oct 2024 \u2013 Sep 2025",
+  "period_after": "Oct 2025 \u2013 Sep 2026",
+  "period_after_key": "20251001-20260930",
+  "case_id": "NUH-2609-0dc7e1",
+  "lon": 77.00813,
+  "lat": 27.76711,
+  "State": "Haryana",
+  "District": "Nuh",
+  "Tehsil": "Ferozepur Jhirka",
+  "Block": "Ferozepur Jhirka",
+  "Village": "Ghata Shamasabad(106)",
+  "spans_boundary": "",
+  "in_district_share": 1.0,
+  "authorisation": "no authorised areas on file",
+  "context": [],
+  "context_multiplier": 1.0,
+  "confidence": 0.7309379438132055,
+  "priority": 0.7096337738471696,
+  "tier": "Inspect",
+  "reasons": [
+    "1.0 ha newly disturbed (boundary range 0.4\u20131.5 ha)",
+    "bare ground or open pit in 98% of clear views in Oct 2025 \u2013 Sep 2026, vs 25% in Oct 2024 \u2013 Sep 2025",
+    "peak greenness (NDVI p90) fell from 0.31 to 0.15",
+    "grows out of ground that was already disturbed",
+    "no authorised areas on file"
+  ],
+  "rank": 1,
+  "evidence": {
+    "chip_bbox_utm": [
+      697470.0,
+      3072590.0,
+      698270.0,
+      3073390.0
+    ],
+    "crs": "EPSG:32643",
+    "onset_month": "Nov 2025",
+    "began_in_later_period": true,
+    "before": {
+      "date": "2025-09-25",
+      "items": [
+        "S2C_T43RFL_20250925T053546_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2C_T43RFL_20250925T053546_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "04f42f408a01b2130cfeb1cc41773f6e5a5681dfd4cf4548e5d51355a5a7fb92"
+    },
+    "after": {
+      "date": "2026-09-30",
+      "items": [
+        "S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "f5dd56e64c36fcf95d3180077c14969b84bb321258e5f9369deab2278dde2627"
+    }
+  },
+  "href": "cases/NUH-2609-0dc7e1/case.html",
+  "place": "Ghata Shamasabad(106), Ferozepur Jhirka, Nuh, Haryana",
+  "geometry_wgs84": "POLYGON ((77.00803474816068 27.767648980643976, 77.00803143464174 27.76746853993309, 77.00782858164081 27.76747148719458, 77.00781201617815 27.766569283451965, 77.00740300109388 27.76639473605025, 77.00759922691122 27.76603090793035, 77.00800492759706 27.7660250140633, 77.00800824087003 27.766205454814795, 77.008211091501 27.766202507412867, 77.00822103250687 27.76674382956964, 77.00842388410958 27.766740881803138, 77.00843714055132 27.767462644518094, 77.00803474816068 27.767648980643976))"
+}

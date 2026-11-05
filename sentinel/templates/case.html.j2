@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case {{ c.case_id }}</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main>
+<p class="noprint"><a href="../../index.html">← All cases</a></p>
+<h1>Case {{ c.case_id }}</h1>
+<p class="sub">Suspected {{ cfg.change_class|lower }} · {{ c.place }}</p>
+
+<div class="card facts">
+  <div class="fact"><div class="k">Priority</div><div class="v"><span class="tier"><i style="background: {{ tier_colour }}"></i>{{ c.tier }}</span> <small>rank {{ c.rank }}</small></div></div>
+  <div class="fact"><div class="k">Area</div><div class="v">{{ "%.1f"|format(c.area_ha) }} ha <small>{{ "%.1f"|format(c.area_ha_low) }}–{{ "%.1f"|format(c.area_ha_high) }}</small></div></div>
+  <div class="fact"><div class="k">Confidence</div><div class="v">{{ "%.0f"|format(c.confidence * 100) }}%</div></div>
+  <div class="fact"><div class="k">Change happened between</div><div class="v">{% if c.evidence.before %}{{ c.evidence.before.date }} <small>and</small> {{ c.evidence.after.date }}{% else %}<small>{{ c.period_before }} → {{ c.period_after }}</small>{% endif %}{% if c.evidence.began_in_later_period %}<br><small>below last year's level from {{ c.evidence.onset_month }}</small>{% elif c.evidence.before %}<br><small>already under way by {{ c.period_after.split(" – ")[0] }}</small>{% endif %}</div></div>
+  <div class="fact"><div class="k">Type</div><div class="v">{{ c.kind }}</div></div>
+  <div class="fact"><div class="k">Location</div><div class="v"><small>{{ "%.5f"|format(c.lat) }}° N, {{ "%.5f"|format(c.lon) }}° E<br>
+    <a href="https://www.google.com/maps/@{{ c.lat }},{{ c.lon }},800m/data=!3m1!1e3">Google Maps</a> ·
+    <a href="https://www.openstreetmap.org/?mlat={{ c.lat }}&amp;mlon={{ c.lon }}#map=16/{{ c.lat }}/{{ c.lon }}">OSM</a></small></div></div>
+</div>
+
+<h2>Before and after</h2>
+{% if c.evidence.before %}
+<div class="pair">
+  <figure style="margin:0"><img src="before.png" alt="Before: {{ c.evidence.before.date }}"></figure>
+  <figure style="margin:0"><img src="after.png" alt="After: {{ c.evidence.after.date }}"></figure>
+</div>
+<p class="note">Both images use the same colour stretch. The white outline is the detected area. {% if c.evidence.began_in_later_period %}The earlier image is the clear view closest to one year before the later one, so the season matches.{% else %}The change was already under way when {{ c.period_after }} began, so the earlier image is the first clear view of {{ c.period_before }}.{% endif %}</p>
+{% else %}
+<p class="note">No sufficiently clear Sentinel-2 view was found for this site; see the trajectory below.</p>
+{% endif %}
+
+<h2>Greenness through both periods</h2>
+<img class="wide" src="trajectory.png" alt="Monthly NDVI inside the site and in a {{ cfg.cases.ring_m }} m ring around it">
+<p class="note">Monthly median NDVI inside the site and in the ring around it. The monsoon and crop calendar move both lines together. Quarrying pulls the site line down and keeps it there. The onset month is the first month the site stays below its level a year earlier, relative to the ring. Gaps are months with no clear view.</p>
+
+<div class="split">
+<div>
+<h2>Why it is ranked #{{ c.rank }}</h2>
+<ul class="reasons">{% for r in c.reasons %}<li>{{ r }}</li>{% endfor %}</ul>
+</div>
+<div>
+<h2>Jurisdiction</h2>
+<table><tbody>
+{% for l in levels %}<tr><th>{{ l }}</th><td>{{ c[l] }}</td></tr>{% endfor %}
+{% if c.spans_boundary %}<tr><th>Straddles</th><td>{{ c.spans_boundary }}</td></tr>{% endif %}
+<tr><th>Authorisation</th><td>{{ c.authorisation }}</td></tr>
+</tbody></table>
+{% if cfg.authorisation_note %}<p class="note">{{ cfg.authorisation_note }}</p>{% endif %}
+</div>
+</div>
+
+{% if cfg.field_checks %}
+<h2>Check on the ground</h2>
+<ul class="reasons">{% for f in cfg.field_checks %}<li>{{ f }}</li>{% endfor %}</ul>
+{% endif %}
+
+<h2>Evidence trail</h2>
+<div class="scroll">
+<table><tbody>
+{% for side in ["before", "after"] %}{% if c.evidence[side] %}
+<tr><th>{{ side|title }} image</th><td>{{ c.evidence[side].date }}, {{ "%.0f"|format(c.evidence[side].clear_fraction * 100) }}% clear over the chip<br>
+  {% for id, href in zip(c.evidence[side]["items"], c.evidence[side].stac) %}<a href="{{ href }}"><code>{{ id }}</code></a><br>{% endfor %}
+  SHA-256 of image: <code>{{ c.evidence[side].png_sha256 }}</code></td></tr>
+{% endif %}{% endfor %}
+<tr><th>Detection</th><td>{{ c.period_before }} vs {{ c.period_after }}: share of clear views with bare ground or open pit {{ "%.0f"|format(c.disturbed_before * 100) }}% → {{ "%.0f"|format(c.disturbed_after * 100) }}%; peak NDVI {{ "%.2f"|format(c.ndvi_p90_before) }} → {{ "%.2f"|format(c.ndvi_p90_after) }}; about {{ "%.0f"|format(c.n_clear_before) }} and {{ "%.0f"|format(c.n_clear_after) }} clear views per pixel</td></tr>
+<tr><th>Pipeline</th><td>sentinel {{ run.version }}, config {{ cfg.hash }}, run {{ run.timestamp }}; machine-readable record: <a href="evidence.json">evidence.json</a></td></tr>
+</tbody></table>
+</div>
+<p class="note">This is a lead from free satellite imagery (Copernicus Sentinel-2), not proof of illegality. Confirm in the field before taking action. Boundaries are from geoBoundaries (ODbL), not an official Survey of India map.</p>
+</main>
+</body>
+</html>

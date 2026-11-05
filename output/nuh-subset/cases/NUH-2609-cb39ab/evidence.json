@@ -1,0 +1,84 @@
+{
+  "pixels": 26.0,
+  "area_ha": 1.04,
+  "disturbed_before": 0.4774535791232036,
+  "disturbed_after": 0.9730769189504477,
+  "ndvi_p90_before": 0.32913384242699695,
+  "ndvi_p90_after": 0.11923076269718316,
+  "bsi_before": 0.17050276352809027,
+  "bsi_after": 0.15914601546067458,
+  "n_clear_before": 29.0,
+  "n_clear_after": 30.0,
+  "cropland_frac": 0.0,
+  "built_frac": 0.0,
+  "slope_mean": 5.100224254223017,
+  "kind": "expansion",
+  "area_ha_low": 0.43055728090000855,
+  "area_ha_high": 1.6494427190999916,
+  "label": 6,
+  "period_before": "Oct 2024 \u2013 Sep 2025",
+  "period_after": "Oct 2025 \u2013 Sep 2026",
+  "period_after_key": "20251001-20260930",
+  "case_id": "NUH-2609-cb39ab",
+  "lon": 77.00441,
+  "lat": 27.71942,
+  "State": "Rajasthan",
+  "District": "Bharatpur",
+  "Tehsil": "Pahari",
+  "Block": "Pahari",
+  "Village": "Chinawara",
+  "spans_boundary": "",
+  "in_district_share": 0.0,
+  "authorisation": "no authorised areas on file",
+  "context": [],
+  "context_multiplier": 1.0,
+  "confidence": 0.8191718463301179,
+  "priority": 0.42128744574161636,
+  "tier": "Inspect",
+  "reasons": [
+    "1.0 ha newly disturbed (boundary range 0.4\u20131.6 ha)",
+    "bare ground or open pit in 97% of clear views in Oct 2025 \u2013 Sep 2026, vs 48% in Oct 2024 \u2013 Sep 2025",
+    "peak greenness (NDVI p90) fell from 0.33 to 0.12",
+    "grows out of ground that was already disturbed",
+    "on hill terrain (mean slope 5\u00b0)",
+    "no authorised areas on file",
+    "mostly outside the district: refer to the neighbouring administration"
+  ],
+  "rank": 3,
+  "evidence": {
+    "chip_bbox_utm": [
+      697220.0,
+      3067330.0,
+      698020.0,
+      3068130.0
+    ],
+    "crs": "EPSG:32643",
+    "onset_month": null,
+    "began_in_later_period": false,
+    "before": {
+      "date": "2024-10-05",
+      "items": [
+        "S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "clear_fraction": 0.981,
+      "png_sha256": "132690004d46eda3b7a542ee908301aeacd9687a0c2822d472fe94bf2549d820"
+    },
+    "after": {
+      "date": "2026-09-30",
+      "items": [
+        "S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "81f166f058d4c9f61a32c1d862e6ddbc7c839870f29dea3fed9466dafc277e7e"
+    }
+  },
+  "href": "cases/NUH-2609-cb39ab/case.html",
+  "place": "Chinawara, Pahari, Bharatpur, Rajasthan",
+  "geometry_wgs84": "POLYGON ((77.00412286497766 27.720236988594976, 77.00411956453915 27.72005654621432, 77.00391679886164 27.72005948313241, 77.00390689873008 27.71951815589294, 77.00410966340746 27.719515219041927, 77.00410636309155 27.719334776640995, 77.00451189168766 27.719328902093462, 77.00450198892361 27.718787574994437, 77.00490421387022 27.718601257062407, 77.00490751539698 27.718781699394146, 77.00511027858768 27.7187787611489, 77.00511358047844 27.718959203453213, 77.00471135465439 27.71914552203568, 77.00472455997978 27.719867291360902, 77.0049273252013 27.71986435327818, 77.00493062694265 27.72004479557444, 77.00472786138776 27.72004773367954, 77.0047311628264 27.7202281759931, 77.00412286497766 27.720236988594976))"
+}

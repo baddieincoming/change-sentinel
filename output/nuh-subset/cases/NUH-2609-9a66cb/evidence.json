@@ -1,0 +1,83 @@
+{
+  "pixels": 27.0,
+  "area_ha": 1.08,
+  "disturbed_before": 0.3555555619575359,
+  "disturbed_after": 0.8103022619530007,
+  "ndvi_p90_before": 0.7859142400600292,
+  "ndvi_p90_after": 0.4132691776310956,
+  "bsi_before": 0.12044327788882786,
+  "bsi_after": 0.18722662660810682,
+  "n_clear_before": 30.0,
+  "n_clear_after": 29.85185185185185,
+  "cropland_frac": 1.0,
+  "built_frac": 0.0,
+  "slope_mean": 0.28836481190390056,
+  "kind": "new site",
+  "area_ha_low": 0.5752786404500043,
+  "area_ha_high": 1.5847213595499958,
+  "label": 1,
+  "period_before": "Oct 2024 \u2013 Sep 2025",
+  "period_after": "Oct 2025 \u2013 Sep 2026",
+  "period_after_key": "20251001-20260930",
+  "case_id": "NUH-2609-9a66cb",
+  "lon": 76.96192,
+  "lat": 27.83248,
+  "State": "Haryana",
+  "District": "Nuh",
+  "Tehsil": "Ferozepur Jhirka",
+  "Block": "Ferozepur Jhirka",
+  "Village": "Nasirbas(67)",
+  "spans_boundary": "",
+  "in_district_share": 1.0,
+  "authorisation": "no authorised areas on file",
+  "context": [],
+  "context_multiplier": 1.0,
+  "confidence": 0.10238342716742257,
+  "priority": 0.10817664272279637,
+  "tier": "Low",
+  "reasons": [
+    "1.1 ha newly disturbed (boundary range 0.6\u20131.6 ha)",
+    "bare ground or open pit in 81% of clear views in Oct 2025 \u2013 Sep 2026, vs 36% in Oct 2024 \u2013 Sep 2025",
+    "peak greenness (NDVI p90) fell from 0.79 to 0.41",
+    "new site: nothing disturbed next to it in the earlier period",
+    "caution: 100% mapped as cropland in ESA WorldCover 2021, could be a fallow field",
+    "no authorised areas on file"
+  ],
+  "rank": 7,
+  "evidence": {
+    "chip_bbox_utm": [
+      692820.0,
+      3079790.0,
+      693620.0,
+      3080590.0
+    ],
+    "crs": "EPSG:32643",
+    "onset_month": null,
+    "began_in_later_period": false,
+    "before": {
+      "date": "2024-10-05",
+      "items": [
+        "S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "9c7c65126c1dbd21ebed085646198df9a45d01202d4a6c1de6b832defa9954de"
+    },
+    "after": {
+      "date": "2026-09-30",
+      "items": [
+        "S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "a299d66397222780539da3f849cbcdb072ed70dd73446fbbf5373f454357d106"
+    }
+  },
+  "href": "cases/NUH-2609-9a66cb/case.html",
+  "place": "Nasirbas(67), Ferozepur Jhirka, Nuh, Haryana",
+  "geometry_wgs84": "POLYGON ((76.96172965549957 27.83311028761304, 76.96172640939335 27.83292984353689, 76.96152342909193 27.832932729076546, 76.96151369195991 27.83239139675194, 76.96131071263441 27.832394281927694, 76.96130422203423 27.832033393642146, 76.96150720068904 27.83203050851021, 76.96150395509876 27.831850064381744, 76.96231586807569 27.83183852095984, 76.9623191150073 27.83201896500066, 76.9625220935116 27.832016078377816, 76.96252858813581 27.832376966400407, 76.96232560896085 27.83237985306709, 76.96232885598279 27.83256029709271, 76.96212587644237 27.832563183483124, 76.96213236990589 27.832924071562978, 76.96172965549957 27.83311028761304))"
+}

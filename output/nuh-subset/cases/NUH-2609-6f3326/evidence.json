@@ -1,0 +1,83 @@
+{
+  "pixels": 31.0,
+  "area_ha": 1.24,
+  "disturbed_before": 0.5368663610950593,
+  "disturbed_after": 0.9222164404007697,
+  "ndvi_p90_before": 0.27254253241323656,
+  "ndvi_p90_after": 0.04378966638638127,
+  "bsi_before": 0.16052836372006324,
+  "bsi_after": 0.0938531429536881,
+  "n_clear_before": 28.0,
+  "n_clear_after": 30.193548387096776,
+  "cropland_frac": 1.0,
+  "built_frac": 0.0,
+  "slope_mean": 0.3229543996313887,
+  "kind": "new site",
+  "area_ha_low": 0.6736233898440398,
+  "area_ha_high": 1.8063766101559602,
+  "label": 9,
+  "period_before": "Oct 2024 \u2013 Sep 2025",
+  "period_after": "Oct 2025 \u2013 Sep 2026",
+  "period_after_key": "20251001-20260930",
+  "case_id": "NUH-2609-6f3326",
+  "lon": 76.92422,
+  "lat": 27.7035,
+  "State": "Haryana",
+  "District": "Nuh",
+  "Tehsil": "Ferozepur Jhirka",
+  "Block": "Ferozepur Jhirka",
+  "Village": "Rawli(91)",
+  "spans_boundary": "",
+  "in_district_share": 1.0,
+  "authorisation": "no authorised areas on file",
+  "context": [],
+  "context_multiplier": 1.0,
+  "confidence": 0.06825262559675217,
+  "priority": 0.07941184335679917,
+  "tier": "Low",
+  "reasons": [
+    "1.2 ha newly disturbed (boundary range 0.7\u20131.8 ha)",
+    "bare ground or open pit in 92% of clear views in Oct 2025 \u2013 Sep 2026, vs 54% in Oct 2024 \u2013 Sep 2025",
+    "peak greenness (NDVI p90) fell from 0.27 to 0.04",
+    "new site: nothing disturbed next to it in the earlier period",
+    "caution: 100% mapped as cropland in ESA WorldCover 2021, could be a fallow field",
+    "no authorised areas on file"
+  ],
+  "rank": 8,
+  "evidence": {
+    "chip_bbox_utm": [
+      689330.0,
+      3065450.0,
+      690130.0,
+      3066250.0
+    ],
+    "crs": "EPSG:32643",
+    "onset_month": null,
+    "began_in_later_period": false,
+    "before": {
+      "date": "2024-10-05",
+      "items": [
+        "S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2B_T43RFL_20241005T053409_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "a444c0528fa275539fe504a7b5ce93ec3038c81b9ead3ff4dac24cb6c7fed42b"
+    },
+    "after": {
+      "date": "2026-09-30",
+      "items": [
+        "S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "stac": [
+        "https://earth-search.aws.element84.com/v1/collections/sentinel-2-c1-l2a/items/S2C_T43RFL_20260930T053540_L2A"
+      ],
+      "clear_fraction": 1.0,
+      "png_sha256": "77438130bdb8c1ed424357580efaacf1b10d355ffe6a1c8ba323c0666bb9380c"
+    }
+  },
+  "href": "cases/NUH-2609-6f3326/case.html",
+  "place": "Rawli(91), Ferozepur Jhirka, Nuh, Haryana",
+  "geometry_wgs84": "POLYGON ((76.92473760182126 27.704036571253493, 76.92473443424056 27.7038561198398, 76.92351796142098 27.703873030055835, 76.92351479586864 27.703692578508303, 76.92331205062895 27.703695395818084, 76.92330572027879 27.703334492664972, 76.92350846485219 27.703331675398108, 76.92350529938805 27.70315122383545, 76.9237080435989 27.70314840629346, 76.92371120939617 27.70332885783465, 76.9249245082463 27.703131494813093, 76.92492767604249 27.70331194622547, 76.92513042038057 27.703309126585868, 76.92513992494509 27.70385048072833, 76.92473760182126 27.704036571253493))"
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ run.district }} change cases</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>{{ cfg.change_class }}: {{ run.district }}, {{ run.state }}</h1>
+<p class="sub">Change from {{ run.periods[0] }} to {{ run.periods[-1] }}. Run {{ run.timestamp }}. {{ total }} sites detected{% if rows %}, top {{ rows|length }} below{% endif %}.</p>
+
+<div class="card facts">
+  {% for tier in ["Inspect", "Review", "Low"] %}
+  <div class="fact"><div class="k">{{ tier }}</div><div class="v"><span class="tier"><i style="background: {{ colours[tier] }}"></i>{{ counts.get(tier, 0) }}</span></div></div>
+  {% endfor %}
+  <div class="fact"><div class="k">Area watched</div><div class="v">{{ "{:,.0f}".format(run.area_km2) }} km²</div></div>
+  <div class="fact"><div class="k">Image dates used</div><div class="v">{{ run.dates_used|sum }}</div></div>
+  <div class="fact"><div class="k">Compute time</div><div class="v">{{ run.minutes }} min <small>on one laptop</small></div></div>
+</div>
+
+<h2>Ranked cases</h2>
+{% if rows %}
+<div class="scroll">
+<table>
+<thead><tr><th>#</th><th>Priority</th><th>Case</th><th>Location</th><th>Area (ha)</th><th>Confidence</th><th>Change happened between</th><th>Authorisation</th><th>After</th></tr></thead>
+<tbody>
+{% for r in rows %}
+{% set loc = levels[::-1] %}
+<tr>
+  <td class="num">{{ r.rank }}</td>
+  <td><span class="tier"><i style="background: {{ colours[r.tier] }}"></i>{{ r.tier }}</span></td>
+  <td><a href="{{ r.href }}">{{ r.case_id }}</a><br><span class="note">{{ r.kind }}</span></td>
+  <td><strong>{{ r[loc[0]] }}</strong><br><span class="note">{{ r[loc[1]] }}{% if loc|length > 2 %}, {{ r[loc[2]] }}{% endif %}</span></td>
+  <td class="num">{{ "%.1f"|format(r.area_ha) }}<br><span class="note">{{ "%.1f"|format(r.area_ha_low) }}–{{ "%.1f"|format(r.area_ha_high) }}</span></td>
+  <td class="num">{{ "%.0f"|format(r.confidence * 100) }}%</td>
+  <td>{% if r.evidence.before %}{{ r.evidence.before.date }}<br>and {{ r.evidence.after.date }}{% else %}{{ r.period_before }} → {{ r.period_after }}{% endif %}{% if r.evidence.began_in_later_period %}<br><span class="note">onset {{ r.evidence.onset_month }}</span>{% endif %}</td>
+  <td class="note">{{ r.authorisation }}</td>
+  <td>{% if r.evidence.after %}<a href="{{ r.href }}"><img src="cases/{{ r.case_id }}/after.png" alt="After image, case {{ r.case_id }}"></a>{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<p>No sites passed the detection rules for these periods.</p>
+{% endif %}
+
+<h2>Where they are</h2>
+<img class="wide" src="overview.png" alt="Map of {{ run.district }} with the ranked cases numbered">
+
+<h2>How to read this</h2>
+<div class="card note">
+<p><strong>Order.</strong> Cases are grouped by tier: <strong>Inspect</strong> (confidence at least {{ "%.0f"|format(cfg.priority.tiers.inspect * 100) }}%), then <strong>Review</strong> (at least {{ "%.0f"|format(cfg.priority.tiers.review * 100) }}%), then <strong>Low</strong>. Within a tier they are ordered by priority: confidence × log₂(1 + area in ha), halved for sites mostly outside the district and cut to a tenth inside an authorised area.</p>
+<p><strong>Confidence</strong> is a score from hand-set weights (how persistently bare the site is, how much greenness it lost, how many clear views back it up, and penalties for cropland). It is not yet calibrated against field checks, so treat 80% as "strong", not as a measured probability.</p>
+<p><strong>Change happened between</strong> gives the dates of the two cloud-free images on each case page: the change is visible in the later one and not in the earlier one.</p>
+<p><strong>Area</strong> is the mapped extent at 20 m; the range shows the effect of the uncertain boundary pixels.</p>
+<p>Every case is a lead from satellite imagery, not proof of illegality. Each one needs a field check.</p>
+</div>
+
+<h2>Run details</h2>
+<div class="scroll">
+<table>
+<tbody>
+{% for p, n in zip(run.periods, run.dates_used) %}
+<tr><th>{{ p }}</th><td>{{ n }} Sentinel-2 acquisition dates used (clearest {{ cfg.stac.max_dates_per_month }} per month, scene cloud &lt; {{ cfg.stac.max_scene_cloud }}%)</td></tr>
+{% endfor %}
+<tr><th>Grid</th><td>{{ run.grid }}</td></tr>
+<tr><th>Imagery</th><td>Copernicus Sentinel-2 L2A Collection 1 via Element 84 Earth Search ({{ cfg.stac.collection }})</td></tr>
+<tr><th>Context</th><td>ESA WorldCover 2021 (CC BY 4.0); Copernicus DEM GLO-30</td></tr>
+<tr><th>Boundaries</th><td>geoBoundaries India (ODbL; sourced from LGD and Census 2011). Not an official Survey of India map.</td></tr>
+<tr><th>Timings</th><td>{% for k, v in run.timings.items() %}{{ k }} {{ "%.0f"|format(v) }} s{% if not loop.last %} · {% endif %}{% endfor %}</td></tr>
+<tr><th>Version</th><td>sentinel {{ run.version }}, config {{ cfg.hash }}</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Machine-readable outputs: <a href="cases.geojson">cases.geojson</a>, <a href="cases.csv">cases.csv</a>.</p>
+</main>
+</body>
+</html>

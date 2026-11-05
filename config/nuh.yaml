@@ -1,0 +1,53 @@
+# Nuh district, Haryana: open-cast stone quarrying in the Aravalli hills.
+#
+# The Supreme Court suspended all mining in the Aravalli hills of Faridabad,
+# Gurugram and Nuh (then Mewat) on 8 May 2009, and the ban was still reported in
+# force in 2024. With no valid leases in the hills, a new quarry here is
+# presumptively unauthorised, so no lease layer is needed to call it.
+# Verify the current legal position before acting on any case.
+
+name: nuh
+case_prefix: NUH
+change_class: Open-cast stone quarrying
+
+district:
+  level: ADM2
+  name: Mewat          # geoBoundaries still uses the pre-2016 name
+  state: Haryana
+aoi_buffer_m: 1000     # catch pits that straddle the Rajasthan border
+
+# Full 12-month windows: every season appears once in each, so the monsoon and
+# the rabi/kharif cycle cancel out. Shorter windows work if both cover the same
+# calendar months (e.g. Jan-Mar 2025 vs Jan-Mar 2026).
+periods:
+  - {name: "Oct 2024 – Sep 2025", start: 2024-10-01, end: 2025-09-30}
+  - {name: "Oct 2025 – Sep 2026", start: 2025-10-01, end: 2026-09-30}
+
+jurisdiction:
+  levels:
+    - {level: ADM1, label: State}
+    - {level: ADM2, label: District}
+    - {level: ADM3, label: Tehsil}
+    - {level: ADM4, label: Block}
+    - {level: ADM5, label: Village, simplified: true}   # Census 2011 villages, ~470 MB one-off download
+  aliases: {Mewat: Nuh}
+
+# Lease polygons (KML/GeoJSON/GPKG) from PARIVESH or the state mining department.
+# Sites inside a lease are ranked down; sites within lease_buffer_m are flagged as overreach.
+authorised_areas: null
+lease_buffer_m: 500
+authorisation_note: >-
+  Mining in the Aravalli hills of Nuh has been suspended by Supreme Court order
+  since 8 May 2009. No lease is on file for this site. Verify the current legal
+  position and the khasra on Bhunaksha before acting.
+
+# Optional sensitive layers that raise priority, e.g.
+#   - {path: data/layers/protected_areas.gpkg, label: a protected area, buffer_m: 1000, multiplier: 1.5}
+context_layers: []
+
+field_checks:
+  - Fresh cut rock faces, drill holes or blasting marks
+  - Excavators, crushers, dumpers, or a haul road leading out of the site
+  - Stockpiles of stone, gravel or overburden
+  - Compare the site with the khasra map on Bhunaksha and any lease plan
+  - Photograph with GPS location and date; note vehicle registration numbers

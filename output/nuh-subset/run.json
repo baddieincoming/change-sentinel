@@ -1,0 +1,27 @@
+{
+  "district": "Nuh",
+  "state": "Haryana",
+  "periods": [
+    "Oct 2024 \u2013 Sep 2025",
+    "Oct 2025 \u2013 Sep 2026"
+  ],
+  "dates_used": [
+    33,
+    35
+  ],
+  "area_km2": 211.2776,
+  "grid": "637 \u00d7 996 px at 20 m, EPSG:32643",
+  "timings": {
+    "boundaries": 2,
+    "search": 0,
+    "composites": 379,
+    "context layers": 0,
+    "detection": 0,
+    "jurisdiction": 0,
+    "case files": 323,
+    "total": 705
+  },
+  "minutes": "12",
+  "timestamp": "2026-11-05 21:53",
+  "version": "0.1.0"
+}

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Change Sentinel</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root {
+    --ink: #1c1b19; --ink2: #4d4b46; --muted: #77756e; --line: #e2e0d8; --tint: #f4f3ef;
+    --night: #161a16; --night2: #232823; --paper: #f2f1ec;
+    --ochre: #b8661c; --ochre-lt: #e7a35a; --sage: #5f7a4a;
+    --inspect: #d03b3b; --review: #ec835a; --low: #898781;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); }
+  .slide { width: 1280px; height: 720px; position: relative; overflow: hidden; padding: 56px 64px 0;
+           background: #fff; break-after: page; page-break-after: always; }
+  .slide.dark { background: var(--night); color: var(--paper); }
+  h1, h2, .big, .kicker { font-family: "Avenir Next", "Helvetica Neue", sans-serif; }
+  h1.t { font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.4px; max-width: 1120px; }
+  .sub { font-size: 20px; color: var(--ink2); margin-top: 10px; max-width: 1000px; line-height: 1.4; }
+  .dark .sub { color: #c9c7bf; }
+  .kicker { font-size: 15px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--ochre); }
+  .dark .kicker { color: var(--ochre-lt); }
+  .foot { position: absolute; left: 64px; right: 64px; bottom: 24px; display: flex; justify-content: space-between;
+          font-size: 13px; color: var(--muted); }
+  .dark .foot { color: #8d8b83; }
+  .body { font-size: 20px; line-height: 1.45; color: var(--ink2); }
+  .body b { color: var(--ink); font-weight: 600; }
+  .dark .body, .dark .body b { color: #dedcd4; }
+  ul.list { list-style: none; }
+  ul.list li { position: relative; padding-left: 22px; margin-bottom: 12px; }
+  ul.list li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 8px; height: 8px;
+                       border-radius: 50%; background: var(--ochre); }
+  .frame { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .frame img { display: block; width: 100%; }
+  .cap { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.35; }
+  .dark .cap { color: #9d9b93; }
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
+         background: var(--ochre); color: #fff; font: 700 15px "Avenir Next", sans-serif; flex: none; }
+  .card { background: var(--tint); border-radius: 14px; padding: 22px 24px; }
+  .card h3 { font: 600 21px "Avenir Next", sans-serif; color: var(--ink); margin: 12px 0 8px; }
+  .card p { font-size: 17px; line-height: 1.45; color: var(--ink2); }
+  .stat .big { font-size: 60px; font-weight: 700; line-height: 1; color: var(--ochre); letter-spacing: -1px; }
+  .stat .lbl { font-size: 17px; color: var(--ink2); margin-top: 8px; line-height: 1.4; }
+  .dark .stat .big { color: var(--ochre-lt); }
+  .dark .stat .lbl { color: #c9c7bf; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex: none; }
+  code, .mono { font-family: "SF Mono", Menlo, monospace; }
+  .row { display: flex; gap: 32px; }
+
+  /* 1 title */
+  .title-grid { display: grid; grid-template-columns: 1fr 470px; gap: 56px; height: 610px; align-items: center; }
+  .title-grid h1 { font-size: 62px; font-weight: 700; line-height: 1.04; letter-spacing: -1.2px; margin: 18px 0 22px; }
+  .title-grid .sub { font-size: 23px; }
+  .chips { display: flex; gap: 10px; margin-top: 34px; flex-wrap: wrap; }
+  .chip { font-size: 15px; padding: 7px 14px; border-radius: 999px; background: var(--night2); color: #d8d6ce; }
+  .hero { border-radius: 18px; overflow: hidden; border: 1px solid #2f352f; }
+  .hero img { display: block; width: 100%; }
+
+  /* 2 problem */
+  .problem { display: grid; grid-template-columns: 400px 1fr; gap: 64px; margin-top: 40px; }
+  .problem .stat { margin-bottom: 34px; }
+  .fail { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .fail .card h3 { margin-top: 0; }
+
+  /* 3 why */
+  .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+  .rule { margin-top: 24px; display: flex; gap: 20px; align-items: stretch; }
+  .rule .lbl { font: 600 15px "Avenir Next", sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted);
+               width: 150px; flex: none; padding-top: 16px; }
+  .rule .cond { flex: 1; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 18px; font-size: 18px; color: var(--ink2); }
+  .rule .cond b { color: var(--ink); font-size: 24px; font-family: "Avenir Next", sans-serif; display: block; }
+
+  /* 4 pipeline */
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 40px; margin-top: 38px; }
+  .step { position: relative; background: var(--tint); border-radius: 14px; padding: 18px 20px 14px; min-height: 166px;
+          display: flex; flex-direction: column; }
+  .step .hd { display: flex; align-items: center; gap: 12px; }
+  .step h3 { font: 600 20px "Avenir Next", sans-serif; }
+  .step p { font-size: 15.5px; line-height: 1.42; color: var(--ink2); margin-top: 10px; }
+  .step .mod { margin-top: auto; padding-top: 10px; font-size: 13px; color: var(--muted); }
+  .step:not(.last)::after { content: "→"; position: absolute; right: -31px; top: 50%; transform: translateY(-50%);
+                            font-size: 22px; color: var(--ochre); }
+  .step.wrap::after { content: none; }
+  .sources { margin-top: 30px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 15px; color: var(--ink2); }
+  .sources .tag { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+  .sources .lbl { font: 600 13px "Avenir Next", sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+
+  /* 5 seasons */
+  .seasons { display: grid; grid-template-columns: 440px 1fr; gap: 48px; margin-top: 34px; align-items: start; }
+
+  /* 6 case file */
+  .casefile { display: grid; grid-template-columns: 720px 1fr; gap: 44px; margin-top: 30px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; margin-top: 4px; }
+  .facts .k { font-size: 13px; letter-spacing: 1.1px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .facts .v { font-size: 19px; color: var(--ink); margin-top: 3px; line-height: 1.3; }
+  .contents { margin-top: 26px; }
+
+  /* 7 ranking */
+  .rank { display: grid; grid-template-columns: 650px 1fr; gap: 44px; margin-top: 30px; }
+  .tiers { display: grid; gap: 12px; margin-bottom: 22px; }
+  .tier { display: flex; align-items: center; gap: 14px; background: var(--tint); border-radius: 12px; padding: 12px 16px; font-size: 17px; color: var(--ink2); }
+  .tier b { width: 76px; color: var(--ink); font-weight: 600; }
+  .formula { font-size: 19px; color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; }
+
+  /* 8 results */
+  .results { display: grid; grid-template-columns: 1fr 450px; gap: 48px; margin-top: 30px; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 28px; }
+  .kpis .big { font-size: 52px; }
+  .tierbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin: 6px 0 10px; gap: 3px; }
+
+  /* 9 compute */
+  .compute { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 34px; }
+  table.t { border-collapse: collapse; width: 100%; font-size: 17px; }
+  table.t th { text-align: left; font-size: 13px; letter-spacing: 1.1px; text-transform: uppercase; color: var(--muted);
+               font-weight: 600; padding: 0 10px 10px 0; border-bottom: 1.5px solid var(--line); }
+  table.t td { padding: 11px 10px 11px 0; border-bottom: 1px solid var(--line); color: var(--ink2); vertical-align: top; }
+  table.t td:first-child { color: var(--ink); font-weight: 600; }
+
+  /* 10 limits */
+  .limits { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; margin-top: 44px; }
+  .limits h3 { font: 600 19px "Avenir Next", sans-serif; margin-bottom: 6px; }
+  .limits p { font-size: 17px; line-height: 1.45; color: var(--ink2); }
+  .lim { display: flex; gap: 16px; }
+  .lim .ic { width: 36px; height: 36px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center;
+             font: 700 17px "Avenir Next", sans-serif; }
+  .ic.warn { background: #fbe9dc; color: var(--ochre); }
+  .ic.next { background: #e6eddf; color: var(--sage); }
+
+  /* 11 close */
+  .close { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 34px; }
+  .stack { display: grid; grid-template-columns: 170px 1fr; gap: 10px 18px; font-size: 17px; }
+  .stack .k { color: #9d9b93; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; padding-top: 2px; }
+  .stack .v { color: #e4e2da; }
+  pre.cmd { background: var(--night2); color: #e8e6de; border-radius: 12px; padding: 18px 20px; font: 15px/1.6 "SF Mono", Menlo, monospace;
+            white-space: pre-wrap; }
+  pre.cmd .c { color: #8d8b83; }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide dark">
+  <div class="title-grid">
+    <div>
+      <div class="kicker">Prototype · The Change Sentinel</div>
+      <h1>Find new stone quarries from orbit. Hand officers case files, not curiosities.</h1>
+      <p class="sub">A laptop pipeline that watches Nuh district, Haryana, in free Sentinel-2 imagery, filters out clouds and seasons, and ranks every new quarry it finds with the evidence attached.</p>
+      <div class="chips">
+        <span class="chip">Sentinel-2 L2A, 10–20 m</span>
+        <span class="chip">Python, one laptop</span>
+        <span class="chip">No accounts or API keys</span>
+      </div>
+    </div>
+    <div>
+      <div class="hero"><img src="img/hero.png" alt="Sentinel-2 true-colour image of a quarry site"></div>
+      <p class="cap">{{ hero.caption }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h1 class="t" style="margin-top:10px">Illegal quarrying is visible from orbit long before anyone complains, but nobody is watching continuously</h1>
+  <div class="problem">
+    <div>
+      <div class="stat"><div class="big">2009</div><div class="lbl">Supreme Court suspends all mining in the Aravalli hills of Faridabad, Gurugram and Nuh. Illegal pits keep appearing.</div></div>
+      <div class="stat"><div class="big">14%</div><div class="lbl">of national Mining Surveillance System alerts were confirmed as illegal mining by the states (RTI response).</div></div>
+    </div>
+    <div class="fail">
+      <div class="card"><h3>Manual comparison doesn't scale</h3><p>Flicking between images works for one village. No district office does it every month for 1,800 km².</p></div>
+      <div class="card"><h3>Naive change detection floods</h3><p>Clouds, shadows, monsoon green-up and harvests produce thousands of false alarms.</p></div>
+      <div class="card"><h3>Commercial monitoring is out of reach</h3><p>Priced for corporate customers, not a district office or a citizen group.</p></div>
+      <div class="card"><h3>Alerts aren't actionable</h3><p>No jurisdiction, no area, no before-and-after view. An officer can't act on a dot on a map.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>2</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="kicker">Our choice</div>
+  <h1 class="t" style="margin-top:10px">One change class: new open-cast stone quarries in Nuh's Aravalli hills</h1>
+  <div class="why">
+    <div class="card"><span class="num">1</span><h3>"Unauthorised" can be decided</h3><p>A quarry is inside a lease polygon or it isn't. In Nuh's hills all mining has been suspended since 2009, so a new pit there is presumptively illegal.</p></div>
+    <div class="card"><span class="num">2</span><h3>The signal survives the seasons</h3><p>A field is bare for a few months, then green again. A working quarry is bare rock or a flooded pit in nearly every clear view, all year.</p></div>
+    <div class="card"><span class="num">3</span><h3>It fixes the existing failure</h3><p>Alerts without evidence and ranking get ignored. Every case here ships with images, area, jurisdiction and a written reason for its rank.</p></div>
+  </div>
+  <div class="rule">
+    <div class="lbl">A pixel is flagged when</div>
+    <div class="cond"><b>≥ 75%</b>of this year's clear views show bare ground or an open pit</div>
+    <div class="cond"><b>+30 points</b>more often bare than in the same 12 months a year earlier</div>
+    <div class="cond"><b>−0.10</b>drop in peak greenness (90th-percentile NDVI)</div>
+    <div class="cond"><b>≥ 0.5 ha</b>after speckle removal, as one connected site</div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>3</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="kicker">Architecture</div>
+  <h1 class="t" style="margin-top:10px">From scene search to case file in eight steps</h1>
+  <div class="flow">
+    <div class="step"><div class="hd"><span class="num">1</span><h3>District and grid</h3></div><p>geoBoundaries ADM1–5 → district mask plus 1 km buffer on a 20 m UTM grid</p><div class="mod mono">aoi.py</div></div>
+    <div class="step"><div class="hd"><span class="num">2</span><h3>Scene search</h3></div><p>Earth Search STAC, Sentinel-2 L2A Collection 1. The 3 clearest dates per month</p><div class="mod mono">imagery.py</div></div>
+    <div class="step"><div class="hd"><span class="num">3</span><h3>Yearly composites</h3></div><p>One date at a time: cloud mask, bare-view share, peak and monthly NDVI</p><div class="mod mono">composites.py</div></div>
+    <div class="step wrap"><div class="hd"><span class="num">4</span><h3>Context layers</h3></div><p>ESA WorldCover cropland share, Copernicus DEM slope</p><div class="mod mono">ancillary.py</div></div>
+    <div class="step"><div class="hd"><span class="num">5</span><h3>Detection</h3></div><p>Pixel rule → clean-up → sites ≥ 0.5 ha → polygons, "new" or "expansion"</p><div class="mod mono">detect.py</div></div>
+    <div class="step"><div class="hd"><span class="num">6</span><h3>Jurisdiction</h3></div><p>Village, block, tehsil, district, state. Lease check, border flag</p><div class="mod mono">jurisdiction.py</div></div>
+    <div class="step"><div class="hd"><span class="num">7</span><h3>Ranking</h3></div><p>Confidence → tier → priority → plain-language reasons</p><div class="mod mono">prioritise.py</div></div>
+    <div class="step last"><div class="hd"><span class="num">8</span><h3>Case files</h3></div><p>Before/after, NDVI chart, onset month, hashes → HTML, GeoJSON, CSV</p><div class="mod mono">evidence.py · report.py</div></div>
+  </div>
+  <div class="sources"><span class="lbl">Free data</span>
+    <span class="tag">Sentinel-2 L2A C1</span><span class="tag">Copernicus DEM GLO-30</span>
+    <span class="tag">ESA WorldCover 2021</span><span class="tag">geoBoundaries ADM1–5 (ODbL)</span>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>4</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="kicker">Clouds and seasons</div>
+  <h1 class="t" style="margin-top:10px">Clouds and seasons cancel out by design, not by tuning</h1>
+  <div class="seasons">
+    <ul class="list body">
+      <li><b>Cloud and shadow mask</b> from the scene classification layer, grown by 40 m.</li>
+      <li><b>Peak greenness uses the 90th percentile.</b> A missed cloud can only lower NDVI, never raise it.</li>
+      <li><b>Whole 12-month windows</b>, so every season appears once on both sides of the comparison.</li>
+      <li><b>Onset dated against the same month last year</b>, relative to a 300 m ring around the site, so a wet or dry year cancels out too.</li>
+    </ul>
+    <div>
+      <div class="frame"><img src="img/trajectory.png" alt="Monthly NDVI of a site against its surroundings"></div>
+      <p class="cap">{{ traj.caption }}</p>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>5</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="kicker">The output</div>
+  <h1 class="t" style="margin-top:10px">Every detection becomes a case file an officer can act on</h1>
+  <div class="casefile">
+    <div>
+      <div class="pair">
+        <div class="frame"><img src="img/before.png" alt="Before image"></div>
+        <div class="frame"><img src="img/after.png" alt="After image"></div>
+      </div>
+      <p class="cap">{{ feat.case_id }}: same-season pair, identical colour stretch, detected area outlined. Scene IDs and SHA-256 of each image are recorded in the case file.</p>
+    </div>
+    <div>
+      <div class="facts">
+        <div><div class="k">Village</div><div class="v">{{ feat.village }}</div></div>
+        <div><div class="k">Tehsil, district</div><div class="v">{{ feat.tehsil }}, {{ feat.district }}</div></div>
+        <div><div class="k">Area</div><div class="v">{{ feat.area }} ha <span style="color:var(--muted);font-size:16px">({{ feat.area_lo }}–{{ feat.area_hi }})</span></div></div>
+        <div><div class="k">Confidence</div><div class="v">{{ feat.conf }}% · {{ feat.tier }}</div></div>
+        <div style="grid-column: span 2"><div class="k">Change window</div><div class="v">{{ feat.window }}</div></div>
+      </div>
+      <ul class="list body contents" style="font-size:17px">
+        <li>Plain-language reasons for its rank</li>
+        <li>Authorisation status and the legal note</li>
+        <li>Monthly NDVI chart, site vs surroundings</li>
+        <li>Field checklist and links to Google Maps / OSM</li>
+        <li>evidence.json with geometry, STAC links, hashes</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>6</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="kicker">Prioritisation</div>
+  <h1 class="t" style="margin-top:10px">The top of the list is worth an officer's Monday morning</h1>
+  <div class="rank">
+    <div>
+      <div class="frame"><img src="img/index.png" alt="Ranked case list"></div>
+      <p class="cap">The ranked index from the test run: tier, case, village, area, confidence, change window, thumbnail.</p>
+    </div>
+    <div>
+      <div class="tiers">
+        <div class="tier"><span class="dot" style="background:var(--inspect)"></span><b>Inspect</b>confidence ≥ 70%: send someone</div>
+        <div class="tier"><span class="dot" style="background:var(--review)"></span><b>Review</b>40–70%: check the images first</div>
+        <div class="tier"><span class="dot" style="background:var(--low)"></span><b>Low</b>below 40%: likely a fallow field</div>
+      </div>
+      <div class="formula">priority = confidence × log₂(1 + hectares)</div>
+      <ul class="list body" style="font-size:17px">
+        <li>×0.1 inside an authorised lease, ×0.5 outside the district</li>
+        <li>Confidence weighs bare share, its increase, NDVI drop, observation count, slope, and cropland share</li>
+        <li>Stable case IDs: a re-run never renumbers an officer's list</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>7</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="kicker">Results so far</div>
+  <h1 class="t" style="margin-top:10px">{{ res.headline }}</h1>
+  <div class="results">
+    <div>
+      <div class="kpis">
+        <div class="stat"><div class="big">{{ res.area }}</div><div class="lbl">km² watched, Ferozepur Jhirka tehsil and the Rajasthan border</div></div>
+        <div class="stat"><div class="big">{{ res.dates }}</div><div class="lbl">Sentinel-2 dates read across two 12-month windows</div></div>
+        <div class="stat"><div class="big">{{ res.sites }}</div><div class="lbl">sites of 0.5 ha or more flagged by the rule and kept on the list</div></div>
+      </div>
+      <div style="margin-top:34px">
+        <div class="tierbar">
+          {% for t in res.tiers %}<div style="flex:{{ t.n }};background:{{ t.colour }}"></div>{% endfor %}
+        </div>
+        <div class="row" style="gap:28px">
+          {% for t in res.tiers %}<span class="pill"><span class="dot" style="background:{{ t.colour }}"></span>{{ t.n }} {{ t.name }}</span>{% endfor %}
+        </div>
+      </div>
+      <ul class="list body" style="margin-top:26px;font-size:18px">
+        {% for n in res.notes %}<li>{{ n }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div>
+      <div class="frame"><img src="img/overview.png" alt="Map of detected sites"></div>
+      <p class="cap">Nuh district with the test area's cases, numbered by rank.</p>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>8</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">Compute discipline</div>
+  <h1 class="t" style="margin-top:10px">Runs on one laptop. The bottleneck is bytes downloaded, not CPU</h1>
+  <div class="compute">
+    <table class="t">
+      <tr><th></th><th>Test area</th><th>Whole district</th></tr>
+      <tr><td>Area</td><td>{{ res.area }} km²</td><td>1,848 km²</td></tr>
+      <tr><td>Image dates</td><td>{{ res.dates }}</td><td>~68</td></tr>
+      <tr><td>Download</td><td>~0.5 GB</td><td>~6 GB (est.)</td></tr>
+      <tr><td>Peak memory</td><td>&lt; 1 GB</td><td>~1.5 GB</td></tr>
+      <tr><td>CPU time</td><td>~1 min</td><td>a few minutes</td></tr>
+      <tr><td>First run, wall time</td><td>~20 min, slow link</td><td>1 h+ at 10 Mbps (est.)</td></tr>
+      <tr><td>Re-run, new rules</td><td>composites cached</td><td>composites cached</td></tr>
+    </table>
+    <ul class="list body" style="font-size:18px">
+      <li><b>Each image block is downloaded once:</b> a whole date is read in one call. Tiling cost 4× the bytes in testing.</li>
+      <li><b>3 clearest dates per month.</b> Seasonal spread matters more than scene count.</li>
+      <li><b>10 m bands read from their 20 m overviews.</b> Only the evidence images use 10 m.</li>
+      <li><b>1-byte quantised NDVI stacks:</b> a year of observations fits in under 1 GB.</li>
+      <li><b>Cached composites:</b> change thresholds and re-run without downloading the year of imagery again.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>9</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="kicker">Honest limits and next steps</div>
+  <h1 class="t" style="margin-top:10px">A lead, not proof. Here is what it can't do yet</h1>
+  <div class="limits">
+    <div class="lim"><div class="ic warn">!</div><div><h3>Confidence is not calibrated</h3><p>Weights are hand-set priors. Next: label ~100 sites, fit the logistic model, report precision at "Inspect".</p></div></div>
+    <div class="lim"><div class="ic warn">!</div><div><h3>Monsoon gap</h3><p>Optical imagery is thin July–September. Next: Sentinel-1 or NISAR radar, both free.</p></div></div>
+    <div class="lim"><div class="ic warn">!</div><div><h3>Fallow fields and brick kilns</h3><p>Can stay bare all year. Cropland and slope push them down the list but don't remove them.</p></div></div>
+    <div class="lim"><div class="ic warn">!</div><div><h3>No lease layer for Nuh's neighbours</h3><p>Next: load PARIVESH or state mining lease polygons; the lease check already supports them.</p></div></div>
+    <div class="lim"><div class="ic next">→</div><div><h3>Whole district, every month</h3><p>Run on a cloud notebook near the imagery, then schedule monthly so new cases appear automatically.</p></div></div>
+    <div class="lim"><div class="ic next">→</div><div><h3>Other districts and change classes</h3><p>A new YAML file per district. Lake infill is the inverted rule: water share falls, bare or built rises.</p></div></div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>10</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide dark">
+  <div class="kicker">Try it</div>
+  <h1 class="t" style="margin-top:10px">Open source, free data, one command</h1>
+  <div class="close">
+    <div>
+      <pre class="cmd"><span class="c"># install</span>
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+
+<span class="c"># test area (~20 min first run on a slow link)</span>
+.venv/bin/python -m sentinel config/nuh.yaml \
+    --subset 76.86,27.70,77.00,27.86
+
+<span class="c"># whole district</span>
+.venv/bin/python -m sentinel config/nuh.yaml
+open output/nuh/index.html</pre>
+    </div>
+    <div class="stack">
+      <div class="k">Language</div><div class="v">Python 3.12</div>
+      <div class="k">Imagery</div><div class="v">pystac-client, odc-stac, odc-geo, rasterio / GDAL</div>
+      <div class="k">Processing</div><div class="v">numpy, scipy.ndimage, xarray, pandas</div>
+      <div class="k">Maps</div><div class="v">geopandas, shapely, pyproj</div>
+      <div class="k">Case files</div><div class="v">matplotlib, Jinja2 → HTML, GeoJSON, CSV, JSON</div>
+      <div class="k">Infrastructure</div><div class="v">A laptop. No server, database, account or key</div>
+      <div class="k">Tests</div><div class="v">pytest: detection, dating and download rules</div>
+    </div>
+  </div>
+  <div class="foot"><span>The Change Sentinel</span><span>11</span></div>
+</section>
+
+</body>
+</html>
